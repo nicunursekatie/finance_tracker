@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Personal Finance Tracker</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    form { max-width: 400px; margin-bottom: 20px; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 15px; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Personal Finance Tracker</h1>
+  <!-- Data Entry Form -->
+  <form id="transactionForm">
+    <label for="transDate">Date:</label>
+    <input type="date" id="transDate" name="transDate">
+
+    <label for="transDescription">Description:</label>
+    <input type="text" id="transDescription" name="transDescription" placeholder="Enter description">
+
+    <label for="transAmount">Amount:</label>
+    <input type="number" id="transAmount" name="transAmount" step="0.01" placeholder="Enter amount">
+
+    <label for="transCategory">Category:</label>
+    <select id="transCategory" name="transCategory">
+      <option value="">Select Category</option>
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+      <option value="food">Food</option>
+      <option value="rent">Rent</option>
+      <option value="utilities">Utilities</option>
+      <option value="other">Other</option>
+    </select>
+
+    <button type="submit">Add Transaction</button>
+  </form>
+
+  <!-- JavaScript for Data Storage -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('transactionForm');
+      const transDateInput = document.getElementById('transDate');
+
+      // Auto-fill the date input with today's date
+      if (transDateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        transDateInput.value = today;
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Retrieve form field values
+        const date = document.getElementById('transDate').value;
+        const description = document.getElementById('transDescription').value;
+        const amount = parseFloat(document.getElementById('transAmount').value);
+        const category = document.getElementById('transCategory').value;
+
+        // Simple validation
+        if (!date || !description || isNaN(amount) || !category) {
+          alert("Please fill in all the fields.");
+          return;
+        }
+
+        // Create a transaction object
+        const transaction = {
+          date: date,
+          description: description,
+          amount: amount,
+          category: category,
+          timestamp: new Date().toISOString()
+        };
+
+        // Retrieve existing transactions from localStorage or start a new array
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        transactions.push(transaction);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+
+        alert("Transaction added successfully!");
+
+        // Reset the form (and re-set the date to today's date)
+        form.reset();
+        if (transDateInput) {
+          transDateInput.value = new Date().toISOString().split('T')[0];
+        }
+      });
+    });
+  </script>
+</body>
+</html>
