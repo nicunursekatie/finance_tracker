@@ -1,12 +1,8 @@
-import React from 'react';
+import React from "react";
 
-export function Button({ children, className, ...props }) {
+const Button = ({ className, children, disabled, ...props }) => {
   return (
-    <button 
-      className={`px-4 py-2 bg-blue-500 text-white rounded ${className}`} 
-      {...props}
-    >
-      {children}
-    </button>
-  );
-}
+    <button
+      className={`px-4 py-2 rounded bg-blue-500 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      } ${className || ""
