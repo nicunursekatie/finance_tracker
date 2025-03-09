@@ -1,0 +1,288 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+button {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background-color: #4a90e2;
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  margin-top: 10px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #3a80d2;
+}
+
+button.danger {
+  background-color: #e74c3c;
+  margin-left: 10px;
+}
+
+button.danger:hover {
+  background-color: #d73c2c;
+}
+
+button.secondary-btn {
+  background-color: #95a5a6;
+}
+
+button.secondary-btn:hover {
+  background-color: #7f8c8d;
+}
+
+button.expense-btn {
+  background-color: #e74c3c;
+}
+
+button.expense-btn:hover {
+  background-color: #d73c2c;
+}
+
+button.income-btn {
+  background-color: #2ecc71;
+}
+
+button.income-btn:hover {
+  background-color: #27ae60;
+}
+
+.quick-action {
+  margin-top: 0;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  background-color: #7f8c8d;
+}
+
+.add-transaction-btn {
+  background-color: #3498db;
+}
+
+input, select {
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.transaction-card {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #2c3e50;
+}
+
+h2 {
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  color: #2c3e50;
+}
+
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #34495e;
+}
+
+.total-balance {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.accounts-list {
+  margin-bottom: 30px;
+}
+
+.account-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.account-details {
+  display: flex;
+  align-items: center;
+}
+
+.account-details p {
+  margin-right: 15px;
+  margin-bottom: 0;
+}
+
+.account-item h3 {
+  margin: 0;
+}
+
+.add-account {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.positive {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.negative {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.type-toggle {
+  display: flex;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.toggle-btn {
+  flex: 1;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+  border-radius: 0;
+  background-color: #ecf0f1;
+  color: #7f8c8d;
+  font-weight: bold;
+}
+
+.toggle-btn.expense-active {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.toggle-btn.income-active {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.amount-input {
+  position: relative;
+}
+
+.dollar-sign {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+  font-weight: bold;
+}
+
+.amount-field {
+  padding-left: 25px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.action-buttons button {
+  flex: 1;
+  padding: 12px;
+  font-size: 1.1rem;
+}
+
+.account-select {
+  font-weight: 500;
+}
+
+.recent-transactions {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.mini-transactions {
+  margin-bottom: 15px;
+}
+
+.mini-transaction {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.transaction-date {
+  color: #95a5a6;
+  font-size: 0.8rem;
+  margin-left: 8px;
+}
+
+.transaction-desc {
+  margin: 3px 0 0 0;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+.no-transactions {
+  padding: 20px 0;
+  text-align: center;
+  color: #95a5a6;
+  font-style: italic;
+}
