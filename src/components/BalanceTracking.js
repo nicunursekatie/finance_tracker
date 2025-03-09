@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import BalanceTracking from './ui/BalanceTracking';
-import TransactionEntry from './ui/TransactionEntry';
+import BalanceTracking from './src/componenets/ui/BalanceTracking';
+import TransactionEntry from './src/components/ui/TransactionEntry';
 import BudgetTracker from './ui/BudgetTracker';
 
 function App() {
