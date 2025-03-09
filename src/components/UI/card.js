@@ -1,33 +1,47 @@
-import React from 'react';
+import React from "react";
 
-export function Card({ children, className, ...props }) {
+const Card = ({ className, children, ...props }) => {
   return (
-    <div className={`border rounded p-4 ${className}`} {...props}>
+    <div
+      className={`bg-white rounded-lg border shadow-sm overflow-hidden ${className || ""}`}
+      {...props}
+    >
       {children}
     </div>
   );
-}
+};
 
-export function CardHeader({ children, className, ...props }) {
+const CardHeader = ({ className, children, ...props }) => {
   return (
-    <div className={`mb-4 ${className}`} {...props}>
+    <div
+      className={`p-4 border-b ${className || ""}`}
+      {...props}
+    >
       {children}
     </div>
   );
-}
+};
 
-export function CardTitle({ children, className, ...props }) {
+const CardTitle = ({ className, children, ...props }) => {
   return (
-    <h2 className={`text-xl font-semibold ${className}`} {...props}>
+    <h3
+      className={`text-lg font-semibold ${className || ""}`}
+      {...props}
+    >
       {children}
-    </h2>
+    </h3>
   );
-}
+};
 
-export function CardContent({ children, className, ...props }) {
+const CardContent = ({ className, children, ...props }) => {
   return (
-    <div className={`${className}`} {...props}>
+    <div
+      className={`p-4 ${className || ""}`}
+      {...props}
+    >
       {children}
     </div>
   );
-}
+};
+
+export { Card, CardHeader, CardTitle, CardContent };
