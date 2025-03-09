@@ -9,10 +9,14 @@
     label { display: block; margin-top: 10px; }
     input, select { width: 100%; padding: 8px; margin-top: 5px; }
     button { margin-top: 15px; padding: 10px; }
+    #transactionList { margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
   </style>
 </head>
 <body>
   <h1>Personal Finance Tracker</h1>
+  
   <!-- Data Entry Form -->
   <form id="transactionForm">
     <label for="transDate">Date:</label>
@@ -38,17 +42,93 @@
     <button type="submit">Add Transaction</button>
   </form>
 
-  <!-- JavaScript for Data Storage -->
+  <!-- Transaction List -->
+  <div id="transactionList">
+    <h2>Transaction History</h2>
+    <table id="transactionsTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="transactionsBody">
+        <!-- Transactions will be added here dynamically -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- JavaScript for Data Storage and Display -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('transactionForm');
       const transDateInput = document.getElementById('transDate');
+      const transactionsBody = document.getElementById('transactionsBody');
 
       // Auto-fill the date input with today's date
       if (transDateInput) {
         const today = new Date().toISOString().split('T')[0];
         transDateInput.value = today;
       }
+
+      // Function to render transactions
+      function renderTransactions() {
+        // Clear existing rows
+        transactionsBody.innerHTML = '';
+
+        // Retrieve transactions from localStorage
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        
+        // Sort transactions by date (most recent first)
+        transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Render each transaction
+        transactions.forEach((transaction, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${transaction.date}</td>
+            <td>${transaction.description}</td>
+            <td class="${transaction.category === 'income' ? 'text-green' : 'text-red'}">
+              ${transaction.category === 'income' ? '+' : '-'}$${transaction.amount.toFixed(2)}
+            </td>
+            <td>${transaction.category}</td>
+            <td>
+              <button onclick="deleteTransaction(${index})">Delete</button>
+            </td>
+          `;
+          transactionsBody.appendChild(row);
+        });
+
+        // Calculate and display total balance
+        const totalBalance = transactions.reduce((total, transaction) => {
+          return transaction.category === 'income' 
+            ? total + transaction.amount 
+            : total - transaction.amount;
+        }, 0);
+
+        // Update or create balance display
+        let balanceDisplay = document.getElementById('balanceDisplay');
+        if (!balanceDisplay) {
+          balanceDisplay = document.createElement('div');
+          balanceDisplay.id = 'balanceDisplay';
+          document.body.insertBefore(balanceDisplay, transactionList);
+        }
+        balanceDisplay.innerHTML = `<h2>Total Balance: $${totalBalance.toFixed(2)}</h2>`;
+      }
+
+      // Function to delete a transaction
+      window.deleteTransaction = function(index) {
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        transactions.splice(index, 1);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        renderTransactions();
+      }
+
+      // Initial render of transactions
+      renderTransactions();
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -79,7 +159,8 @@
         transactions.push(transaction);
         localStorage.setItem('transactions', JSON.stringify(transactions));
 
-        alert("Transaction added successfully!");
+        // Render updated transactions
+        renderTransactions();
 
         // Reset the form (and re-set the date to today's date)
         form.reset();
