@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from './components/ui/card';
-import { Button } from './components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from './src/components/ui/card';
+import { Button } from './src/components/ui/button';
 import { PieChart } from 'lucide-react';
 
 const BudgetTracker = ({ budgets, setBudgets }) => {
