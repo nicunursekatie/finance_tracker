@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BalanceTracking from './components/BalanceTracking';
 import TransactionEntry from './components/TransactionEntry';
 import BudgetTracker from './components/BudgetTracker';
+import SpendingVisualization from './components/SpendingVisualization';
 
 function App() {
   // Load initial state from localStorage or use default
@@ -79,7 +80,7 @@ function App() {
   };
 
   return (
-    <div className="App container mx-auto p-4">
+    <div className="App container mx-auto p-4 max-w-6xl">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Personal Finance Tracker</h1>
         <button 
@@ -90,7 +91,7 @@ function App() {
         </button>
       </div>
       
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-4 mb-6">
         <BalanceTracking 
           accounts={accounts} 
           setAccounts={setAccounts} 
@@ -102,10 +103,17 @@ function App() {
         />
       </div>
       
-      <div className="mt-6">
+      <div className="mb-6">
+        <SpendingVisualization 
+          accounts={accounts} 
+        />
+      </div>
+      
+      <div>
         <BudgetTracker 
           budgets={budgets} 
-          setBudgets={setBudgets} 
+          setBudgets={setBudgets}
+          accounts={accounts}
         />
       </div>
     </div>
