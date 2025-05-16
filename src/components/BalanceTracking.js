@@ -1,82 +1,114 @@
 import React, { useState } from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { Button } from './ui/button';
+import { Wallet } from 'lucide-react';
 
-function BalanceTracking({ accounts, addAccount, deleteAccount, editAccount }) {
-  const [name, setName] = useState('');
-  const [balance, setBalance] = useState('');
+const BalanceTracking = ({ accounts, setAccounts }) => {
+  const [newAccount, setNewAccount] = useState({
+    name: '',
+    balance: ''
+  });
 
-  const handleAdd = () => {
-    if (name && balance) {
-      addAccount(name, parseFloat(balance));
-      setName('');
-      setBalance('');
-    }
+  const handleAddAccount = () => {
+    if (!newAccount.name) return;
+    
+    setAccounts(prev => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        name: newAccount.name,
+        balance: parseFloat(newAccount.balance) || 0,
+        transactions: []
+      }
+    ]);
+    
+    // Reset form
+    setNewAccount({ name: '', balance: '' });
   };
 
-  return (
-    <div className="balance-container">
-      <h2>Accounts</h2>
-      <input
-        type="text"
-        placeholder="Account Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Balance"
-        value={balance}
-        onChange={(e) => setBalance(e.target.value)}
-      />
-      <Button onClick={handleAdd}>Add Account</Button>
-
-      <ul className="accounts-list">
-        {accounts.map((account) => (
-          <AccountItem
-            key={account.id}
-            account={account}
-            deleteAccount={deleteAccount}
-            editAccount={editAccount}
-          />
-        ))}
-      </ul>
-    </div>
+  const totalBalance = accounts.reduce(
+    (sum, account) => sum + account.balance, 
+    0
   );
-}
-
-function AccountItem({ account, deleteAccount, editAccount }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedName, setEditedName] = useState(account.name);
-  const [editedBalance, setEditedBalance] = useState(account.balance);
-
-  const saveEdit = () => {
-    editAccount(account.id, editedName, parseFloat(editedBalance));
-    setIsEditing(false);
-  };
 
   return (
-    <li className="account-item">
-      {isEditing ? (
-        <>
-          <input value={editedName} onChange={(e) => setEditedName(e.target.value)} />
-          <input
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <Wallet className="mr-2" /> Account Balances
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {/* Accounts Summary */}
+        <div className="mb-4">
+          <h3 className="text-xl font-semibold mb-2">Total Balance: ${totalBalance.toFixed(2)}</h3>
+          
+          {accounts.map(account => (
+            <div key={account.id} className="flex justify-between items-center py-2 border-b">
+              <span className="font-medium">{account.name}</span>
+              <span className={account.balance >= 0 ? 'text-green-600' : 'text-red-600'}>
+                ${account.balance.toFixed(2)}
+              </span>
+            </div>
+          ))}
+        </div>
+        
+        {/* Add New Account */}
+        <div className="mt-4 space-y-2">
+          <input 
+            type="text"
+            placeholder="Account Name"
+            value={newAccount.name}
+            onChange={(e) => setNewAccount(prev => ({
+              ...prev,
+              name: e.target.value
+            }))}
+            className="w-full p-2 border rounded"
+          />
+          
+          <input 
             type="number"
-            value={editedBalance}
-            onChange={(e) => setEditedBalance(e.target.value)}
+            placeholder="Initial Balance"
+            value={newAccount.balance}
+            onChange={(e) => setNewAccount(prev => ({
+              ...prev,
+              balance: e.target.value
+            }))}
+            className="w-full p-2 border rounded"
           />
-          <Button onClick={saveEdit}>Save</Button>
-        </>
-      ) : (
-        <>
-          <span>
-            {account.name}: ${account.balance.toFixed(2)}
-          </span>
-          <Button onClick={() => setIsEditing(true)}>Edit</Button>
-          <Button onClick={() => deleteAccount(account.id)}>Delete</Button>
-        </>
-      )}
-    </li>
+          
+          <Button 
+            onClick={handleAddAccount}
+            className="w-full"
+          >
+            Add Account
+          </Button>
+        </div>
+
+        {/* Recent Transactions */}
+        {accounts.length > 0 && (
+          <div className="mt-6">
+            <h3 className="font-medium mb-2">Recent Transactions</h3>
+            {accounts.flatMap(account => 
+              account.transactions
+                .slice(0, 3)
+                .map(transaction => (
+                  <div key={transaction.id} className="text-sm py-1 border-b flex justify-between">
+                    <div>
+                      <span className="font-medium">{account.name}: </span>
+                      <span>{transaction.description || transaction.category}</span>
+                    </div>
+                    <span className={transaction.type === 'income' ? 'text-green-600' : 'text-red-600'}>
+                      {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+                    </span>
+                  </div>
+                ))
+            )}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
-}
+};
 
 export default BalanceTracking;
